@@ -1,6 +1,12 @@
 <app-add-todo (addTask)= "addTodo($event)" ></app-add-todo>
 
 <h3>Your Tasks List</h3>
-<div *ngFor="let tasks of todoList">
-    <app-todo-item [todo] = "tasks" (deleteTask) = "deleteTodo(tasks)" > </app-todo-item>
-</div>
+<div *ngIf="this.todoList.length === 0; else elseBlock">There is no task in the list.</div>
+
+<ng-template #elseBlock>
+    <div *ngFor="let tasks of todoList; index as i">
+        <app-todo-item [todo] = "tasks" [i] = "i" (deleteTask) = "deleteTodo(tasks)" (onTaskDone) = "toggleTask($event)"  > </app-todo-item>
+    </div>
+
+</ng-template>
+

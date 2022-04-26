@@ -9,7 +9,11 @@ import { Todo } from 'src/app/Todo';
 export class TodoItemComponent implements OnInit {
 
   @Input() todo: Todo;
+  @Input() i: number;
+
   @Output() deleteTask : EventEmitter<Todo> = new EventEmitter();
+  @Output() onTaskDone: EventEmitter<Todo> = new EventEmitter();
+  
   constructor() { }
 
   ngOnInit(): void {
@@ -17,7 +21,13 @@ export class TodoItemComponent implements OnInit {
 
   onClick(todo: Todo) {
     this.deleteTask.emit(this.todo);
-    console.log(todo.title);
+    
+  }
+
+  onTaskComplete(todo: Todo) {
+    this.onTaskDone.emit(todo);
+    
+
   }
 
 }

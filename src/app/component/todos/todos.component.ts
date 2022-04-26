@@ -9,30 +9,20 @@ import { Todo } from 'src/app/Todo';
 export class TodosComponent implements OnInit {
 
   
+  localItem: string | null;
   todoList: Todo[];
   
   constructor() { 
-    this.todoList = [
-      {
-        'sno' : 1,
-        'title' : 'solve all bugs of angular',
-        'desc' : 'install angualr and run the following command',
-        'active' : true
-      },
-      {
-        'sno' : 2,
-        'title' : 'wordpress website checking',
-        'desc' : 'install angualr and run the following command',
-        'active' : false
-      },
-      {
-        'sno' : 3,
-        'title' : 'metrolive changes',
-        'desc' : 'install angualr and run the following command',
-        'active' : true
-      }
-      
-    ];
+    
+    this.localItem = localStorage.getItem("todoList");
+
+    if(this.localItem === null) 
+    {
+      this.todoList = [];
+    } else {
+      this.todoList = JSON.parse(this.localItem);
+    }
+    
   }
 
   ngOnInit(): void {
@@ -45,10 +35,17 @@ export class TodosComponent implements OnInit {
     
     // // delete item on targeted index 
     this.todoList.splice(index, 1);
+    localStorage.setItem("todoList",JSON.stringify(this.todoList));
   }
 
   addTodo(todo: Todo) {
-    console.log(todo);
     this.todoList.push(todo);
+    localStorage.setItem("todoList",JSON.stringify(this.todoList));
+  }
+  toggleTask(todo: Todo) {
+    const index = this.todoList.indexOf(todo);  
+    this.todoList[index].active = !this.todoList[index].active;
+   
+    localStorage.setItem("todoList",JSON.stringify(this.todoList));
   }
 }
